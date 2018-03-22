@@ -1,0 +1,12 @@
+<div>
+    {% load staticfiles %}
+
+    <form  id='product_category_form' enctype="multipart/form-data" action="{% url 'dish_app:add_dish_category' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><button name="submit">Сохранить</button></p>
+    </form>
+
+</div>
+        <script type="text/javascript" src="{% static 'base_app/js/django_form.js' %}"></script>
+        <script type="text/javascript"> bootstrap_form('#product_category_form')</script>

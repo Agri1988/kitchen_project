@@ -1,0 +1,28 @@
+{% extends 'base_app/base.html' %}
+{% if not ajax %}
+{% load staticfiles %}
+{% block body %}
+    <script type="text/javascript" src="{% static 'documents_app/js/report_day_income.js' %}"></script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-offset-6 col-lg-6 ">
+                <form  id='get_report_day_income' enctype="multipart/form-data" action="{% url 'documents_app:report_day_income' %}" method="post">
+                    {% csrf_token %}
+                    <p><input type="date" name="date_to" value="{{ date}}" id="id_date_to" required=""></p>
+                    <p><button id="btn_submit" name="submit">Найти поступления</button></p>
+                </form>
+
+                    <div class="table-responsive ">
+                    <table  id="table" class="table table-bordered">
+                        {% include 'documents_app/table_report_day_income.html' with products=products%}
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% endif %}
+

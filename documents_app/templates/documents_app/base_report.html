@@ -1,0 +1,21 @@
+{% extends 'base_app/base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <script src="{% static "documents_app/js/reporst_app.js" %}"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <form  id='get_remnants_for_input_date' enctype="multipart/form-data" action="{% url 'documents_app:products_remnants' %}" method="post">
+                {% csrf_token %}
+                <p><input type="text" name="date_to" value="{{ date_to_filter_fireld}}" id="id_date_to" required=""></p>
+                <p><button name="submit">Найти остатки</button></p>
+            </form>
+           {% include 'documents_app/reports_remnants.html' %}
+        </div>
+    </div>
+</div>
+<script src="{% static "base_app/js/django_form.js" %}"></script>
+<script type="text/javascript">bootstrap_form('#get_remnants_for_input_date')</script>
+
+
+{% endblock %}

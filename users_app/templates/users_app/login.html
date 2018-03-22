@@ -1,0 +1,22 @@
+{% extends 'base_app/base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <script src="{% static 'base_app/js/django_form.js' %}"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                {% if form.errors %}
+                    <p>Wprowadzone błędne dane</p>
+                {% endif %}
+                <form id="login_form" method="post" action="{% url 'users_app:login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <p><button name="submit">Wejść</button></p>
+                    <input type="hidden" name="next" value="{% url 'documents_app:all_documents' %}">
+                </form>
+                    <script type="text/javascript" src="{% static 'base_app/js/django_form.js' %}"></script>
+                    <script type="text/javascript"> bootstrap_form('#login_form')</script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

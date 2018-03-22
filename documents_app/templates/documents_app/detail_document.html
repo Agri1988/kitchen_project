@@ -1,0 +1,27 @@
+{% extends 'base_app/base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <script type="text/javascript" src="{% static 'documents_app/js/detail_document.js' %}"></script>
+
+    <input hidden id="document_id" value="{{ document_id }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 ">
+                <form id="document_detail_form" method="post" enctype="multipart/form-data"
+                      action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <p><button id="save_document_btn" type="submit" >Сохранить</button></p>
+                </form>
+            </div>
+            {% if not new and products %}
+                {% include 'documents_app/detail_document_product_or_dish.html' with datas=productsInDocument %}
+            {% elif not new and dishes != None %}
+                {% include 'documents_app/detail_document_product_or_dish.html' with datas=dishesInDocument %}
+            {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'base_app/js/django_form.js' %}"></script>
+    <script>bootstrap_form('#document_detail_form')</script>
+
+{% endblock %}

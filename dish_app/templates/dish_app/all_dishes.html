@@ -1,0 +1,23 @@
+{% extends 'base_app/base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-offset-6 col-lg-6 ">
+                <div class="table-responsive ">
+                    <table  id="table_dishes" class="table table-bordered">
+                        {% for dish in dishes %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'dish_app:detail_dish' dish.id%}">{{ dish.name }}</a></td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                <a href="{% url 'dish_app:new_dish' %}">Добавить блюдо</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base_app/base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 ">
+                <div class="table-responsive ">
+                    <table  id="table" class="table table-bordered">
+                        {% for document in documents %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ document.get_document_type_display }}</td>
+                                <td>{{ document.name }}</td>
+                                <td>
+                                    <a href="{% url 'documents_app:detail_document'  document.id %}">{{ document.number }}</a>
+                                </td>
+                                <td>{{ document.date }}</td>
+                                <td>{% if document.document_status %}
+                                        Проведен
+                                    {% else %}
+                                        Не проведен
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                    <a href="{% url 'documents_app:new_document' %}"> Добавить новый документ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

@@ -1,0 +1,31 @@
+<div class="table-responsive ">
+    <table  id="table" class="table table-bordered">
+        <tr id="search_fields">
+            <th><input style="width: 50px"></th>
+            <th><input style="width: 200px"></th>
+            <th><input style="width: 50px"></th>
+            <th><input style="width: 50px"></th>
+            <th><input style="width: 50px"></th>
+        </tr>
+        <tr>
+            <th>№ п/п</th>
+            <th>Наименование товара</th>
+            <th>Доступно</th>
+            <th>ед.изм.</th>
+            <th>Категории</th>
+        </tr>
+        {% for product in products %}
+            {% for id, count in remnants_of_products.items %}
+                {% if product.id == id %}
+                    <tr>
+                        <td>{{ forloop.parentloop.counter }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ count}}</td>
+                        <td>{{ product.get_unit_display}}</td>
+                        <td>{{ product.category}}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </table>
+</div>

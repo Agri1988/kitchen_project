@@ -1,0 +1,7 @@
+{% for product in products %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ product.data.name }}</td>
+        <td>{{ product.count }} {{ product.data.get_unit_display }}</td>
+    </tr>
+{% endfor %}

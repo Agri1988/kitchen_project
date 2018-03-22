@@ -1,0 +1,40 @@
+{% if not one_line %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'documents_app/css/modal_form.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'documents_app/css/modal_form_product.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'dish_app/css/modal_form_category.css' %}">
+<script type="text/javascript" src="{% static 'documents_app/js/add_dish.js' %}"></script>
+<script type="text/javascript" src="{% static 'documents_app/js/add_product.js' %}"></script>
+<script type="text/javascript" src="{% static 'dish_app/js/add_product_category.js' %}"></script>
+<script> var add_category_url = '{% url 'dish_app:add_product_category'%}'</script>
+    {#    <script type="text/javascript" src="{% static 'documents_app/js/add_product.js' %}"></script>#}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<div class="col-lg-6" style="padding-top: 3%">
+    <button id="add_product_or_dish_btn" type="button" class="btn btn-dark" style="margin-top: 3%">
+    </button>
+     <div class="table-responsive ">
+        <table  id="table" class="table table-bordered">
+
+            {% for data in datas %}
+                <tr>
+                    <td>{{ data.0.data }}<input id="entry_id" hidden value="{{ data.1 }}"></td>
+                    <td>{{ data.0.count }}</td>
+                    <td>{{ data.2 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+     </div>
+</div>
+{% else %}
+    {{ data }}
+    <tr>
+        <td>{{ datas.0.data }}<input id="entry_id" hidden value="{{ datas.1 }}"></td>
+        <td>{{ datas.0.count }}</td>
+        <td>{{ datas.2 }}</td>
+    </tr>
+
+{% endif %}
