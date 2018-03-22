@@ -12,8 +12,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<div class="col-lg-6" style="padding-top: 3%">
+<link href="{% static 'base_app/open-iconic-master/font/css/open-iconic-bootstrap.css' %}" rel="stylesheet">
+<div class="col-lg-8" style="padding-top: 3%">
     <button id="add_product_or_dish_btn" type="button" class="btn btn-dark" style="margin-top: 3%">
     </button>
      <div class="table-responsive ">
@@ -24,6 +24,8 @@
                     <td>{{ data.0.data }}<input id="entry_id" hidden value="{{ data.1 }}"></td>
                     <td>{{ data.0.count }}</td>
                     <td>{{ data.2 }}</td>
+                    <td><a id="delete_line" href="{% url 'documents_app:delete_entry_from_document' data.1 document_id document_type%}">
+                        <img style="width: 18px;" src="{% static 'base_app/open-iconic-master/svg/trash.svg' %}"></a> </td>
                 </tr>
             {% endfor %}
         </table>
@@ -35,6 +37,7 @@
         <td>{{ datas.0.data }}<input id="entry_id" hidden value="{{ datas.1 }}"></td>
         <td>{{ datas.0.count }}</td>
         <td>{{ datas.2 }}</td>
+        <td><a href="{% url 'documents_app:delete_entry_from_document' datas.1 document_id document_type%}">
+                        <img style="width: 18px;" src="{% static 'base_app/open-iconic-master/svg/trash.svg' %}"></a> </td>
     </tr>
-
 {% endif %}

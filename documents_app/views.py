@@ -57,6 +57,7 @@ def detail_document(request, document_id = None):
             form.save()
 
     context = {'form': form, 'document_id': document_id, 'products': products, 'dishes': dishes,
+               'document_type': 'dish' if len(dishesInDocument) != 0 else 'product',
                'productsInDocument': productsInDocument if productsInDocument or productsInDocument == None else False,
                'dishesInDocument': dishesInDocument}
     if document_id == None:
@@ -77,7 +78,8 @@ def get_all_dishes_to_document(request):
         dishInDocument = [DishInDocumentForm(instance=new_entry), new_entry.id ]
         template = get_template('documents_app/detail_document_product_or_dish.html')
         product_movement_dish(DishInDocument.objects.filter(document_id=new_entry.document.id))
-        return HttpResponse(template.render({'datas': dishInDocument, 'one_line':True}, request))
+        return HttpResponse(template.render({'datas': dishInDocument, 'one_line':True, 'document_id':new_entry.document.id,
+                                             'document_type':'dish'}, request))
     else:
         dishes = Dish.objects.all()
         template = get_template('documents_app/all_dishes_to_document.html')
@@ -86,22 +88,29 @@ def get_all_dishes_to_document(request):
 
 
 @login_required(login_url='users_app:login')
-def delete_protuct_from_document():
-    pass
-
+def delete_entry_from_document(request, entry_id, document_id, document_type=None):
+    if document_type == 'dish':
+        dish = DishInDocument.objects.get(id=entry_id)
+        dish.delete()
+    elif document_type == 'product':
+        documents = ProductsInDocument.objects.get(id=entry_id)
+        documents.delete()
+    return HttpResponseRedirect(reverse('documents_app:detail_document', args=[document_id]))
 
 @login_required(login_url='users_app:login')
 def get_all_products_to_document(request):
     if request.POST.get('object_id'):
+        print('its this')
         new_entry = ProductsInDocument()
         new_entry.data = Product.objects.get(id=request.POST['object_id'])
         new_entry.document = Document.objects.get(id=request.POST['document_id'])
-        new_entry.count = request.POST['count']
+        new_entry.count = request.POST['count'].replace(',', '.')
         new_entry.save()
         productInDocument = [ProductInDocumentsForm(instance=new_entry), new_entry.id, new_entry.data.get_unit_display]
         template = get_template('documents_app/detail_document_product_or_dish.html')
         product_movement_dish(DishInDocument.objects.filter(document_id=new_entry.document.id))
-        return HttpResponse(template.render({'datas': productInDocument, 'one_line': True}, request))
+        return HttpResponse(template.render({'datas': productInDocument, 'one_line': True,
+                                             'document_id':new_entry.document.id, 'document_type':'product'}, request))
     elif request.POST.get('ajax'):
         product = Product()
         product.name = request.POST['name']
@@ -119,12 +128,14 @@ def get_all_products_to_document(request):
 
 
 @login_required(login_url='users_app:login')
-def products_remnants(request, document_id = None, document_date = date.today().strftime('%d.%m.%Y')):
+def products_remnants(request, document_id = None, document_date = date.today().strftime('%Y-%m-%d')):
     print(request.POST, document_id, document_date)
-    date_to_filter_fireld = document_date
+
     document_date = document_date.split('.')
     document_date.reverse()
     document_date = '-'.join(document_date)
+    date_to_filter_fireld = document_date
+    print(document_date)
     storage_field = DocumentForm()
     movement_entries = MovingProducts.objects.filter(date__lte=document_date)
 

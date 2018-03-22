@@ -1,4 +1,13 @@
-$(document).ready(function () {
+$(document).ready(function detail_document () {
+    if ($('#id_document_status').prop("checked")) {
+        $('#table img').each(function () {
+            $(this).click(function (e) {
+                e.preventDefault()
+                alert('Отмените проведение документа')
+            })
+        })
+    }
+
     var doc_type = $('#id_document_type')
     doc_type.on('change', function () {
         change_btn_value()
@@ -24,6 +33,7 @@ $(document).ready(function () {
 
     $('#table tr').each(function () {
         $(this).find('#id_data').prop('disabled', 'true')
+        $(this).find('#id_count').prop('disabled', 'true')
             });
     function change_btn_value() {
         if ($('#id_document_type').val() == 0){

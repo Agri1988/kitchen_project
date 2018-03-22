@@ -6,7 +6,7 @@
     <input hidden id="document_id" value="{{ document_id }}">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 ">
+            <div class="col-lg-4 ">
                 <form id="document_detail_form" method="post" enctype="multipart/form-data"
                       action="">
                     {% csrf_token %}
@@ -15,9 +15,9 @@
                 </form>
             </div>
             {% if not new and products %}
-                {% include 'documents_app/detail_document_product_or_dish.html' with datas=productsInDocument %}
+                {% include 'documents_app/detail_document_product_or_dish.html' with datas=productsInDocument document_id=document_id  document_type=document_type%}
             {% elif not new and dishes != None %}
-                {% include 'documents_app/detail_document_product_or_dish.html' with datas=dishesInDocument %}
+                {% include 'documents_app/detail_document_product_or_dish.html' with datas=dishesInDocument document_id=document_id  document_type=document_type %}
             {% endif %}
         </div>
     </div>

@@ -5,7 +5,7 @@
         {% for dish in dishes %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'dish_app:detail_dish' dish.id%}">{{ dish.name }}</a></td>
+                <td>{{ dish.name }}</td>
                 <td><input id="count_{{ dish.id }}"></td>
                 <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')">==></button></td>
             </tr>

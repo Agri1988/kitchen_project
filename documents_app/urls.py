@@ -11,4 +11,8 @@ urlpatterns = [
     path('products_remnants/', views.products_remnants, name='products_remnants'),
     path('products_remnants/<str:document_date>/', views.products_remnants, name='products_remnants'),
     path('report_day_income/', views.get_day_income, name='report_day_income'),
+    path('delete_entry_from_document/<str:entry_id>/<str:document_id>/', views.delete_entry_from_document,
+         name='delete_entry_from_document'),
+    path('delete_entry_from_document/<str:entry_id>/<str:document_id>/<str:document_type>/', views.delete_entry_from_document,
+         name='delete_entry_from_document')
 ]
