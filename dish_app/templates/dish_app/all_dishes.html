@@ -10,6 +10,8 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td><a href="{% url 'dish_app:detail_dish' dish.id%}">{{ dish.name }}</a></td>
+                             <td><a id="delete_line" href="{% url 'dish_app:delete_dish' dish.id %}">
+                        <img style="width: 18px;" src="{% static 'base_app/open-iconic-master/svg/trash.svg' %}"></a> </td>
                             </tr>
                         {% endfor %}
 

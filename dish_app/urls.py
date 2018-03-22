@@ -20,4 +20,6 @@ urlpatterns = [
                                                   'template':'dish_app/add_category_dish.html',
                                                   'fieldname': 'name'},
                                                     name='add_dish_category'),
+    path('delete_product/<int:product_id>', views.delete_product, name='delete_product'),
+    path('delete_dish/<int:product_id>', views.delete_dish, name='delete_dish'),
 ]

@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from .models import Dish, Ingredients, Product, ProductCategory
 from .forms import DishForm, ProductForm
+from documents_app.models import ProductsInDocument, DishInDocument
 
 # Create your views here.
 @login_required(login_url='users_app:login')
@@ -129,3 +130,21 @@ def add_field_element(request, template, form, fieldname):
             print(new_element_name)
         data_dict = {'new_element_id':new_element_id, 'new_element_name':new_element_name}
         return JsonResponse(data_dict)
+
+
+@login_required(login_url='users_app:login')
+def delete_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    products = ProductsInDocument.objects.all()
+
+    product.delete() if product in products else product.save()
+    return HttpResponseRedirect(reverse('dish_app:all_products'))
+
+
+
+@login_required(login_url='users_app:login')
+def delete_dish(request, product_id):
+    dish = Dish.objects.get(id=product_id)
+    dishes = DishInDocument.objects.all()
+    dish.delete() if dish in dishes else dish.save()
+    return HttpResponseRedirect(reverse('dish_app:all_dishes'))

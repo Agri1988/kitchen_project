@@ -97,6 +97,13 @@ def delete_entry_from_document(request, entry_id, document_id, document_type=Non
         documents.delete()
     return HttpResponseRedirect(reverse('documents_app:detail_document', args=[document_id]))
 
+
+@login_required(login_url='users_app:login')
+def delete_document(request, document_id):
+    document = Document.objects.get(id=document_id)
+    document.delete()
+    return HttpResponseRedirect(reverse('documents_app:all_documents'))
+
 @login_required(login_url='users_app:login')
 def get_all_products_to_document(request):
     if request.POST.get('object_id'):

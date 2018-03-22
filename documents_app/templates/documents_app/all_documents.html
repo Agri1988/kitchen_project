@@ -21,6 +21,8 @@
                                         Не проведен
                                     {% endif %}
                                 </td>
+                                <td><a id="delete_line" href="{% url 'documents_app:delete_document' document.id %}">
+                        <img style="width: 18px;" src="{% static 'base_app/open-iconic-master/svg/trash.svg' %}"></a> </td>
                             </tr>
                         {% endfor %}
 

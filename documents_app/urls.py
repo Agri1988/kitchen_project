@@ -14,5 +14,6 @@ urlpatterns = [
     path('delete_entry_from_document/<str:entry_id>/<str:document_id>/', views.delete_entry_from_document,
          name='delete_entry_from_document'),
     path('delete_entry_from_document/<str:entry_id>/<str:document_id>/<str:document_type>/', views.delete_entry_from_document,
-         name='delete_entry_from_document')
+         name='delete_entry_from_document'),
+    path('delete_document/<str:document_id>/', views.delete_document, name='delete_document')
 ]

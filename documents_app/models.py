@@ -43,7 +43,7 @@ class MovingProducts(models.Model):
 
 
 class ProductsInDocument(models.Model):
-    document = models.ForeignKey(Document, blank=False, null=False, on_delete=models.CASCADE, verbose_name='Документ')
+    document = models.ForeignKey(Document, blank=False, null=False, on_delete=models.PROTECT, verbose_name='Документ')
     data = models.ForeignKey(Product, blank=False, null=False, on_delete=models.CASCADE, verbose_name='Продукт')
     count = models.DecimalField(max_digits=6, decimal_places=3, verbose_name='Количество')
 
@@ -57,7 +57,7 @@ class ProductsInDocument(models.Model):
 
 
 class DishInDocument(models.Model):
-    document = models.ForeignKey(Document, blank=False, null=False, on_delete=models.CASCADE, verbose_name='Документ')
+    document = models.ForeignKey(Document, blank=False, null=False, on_delete=models.PROTECT, verbose_name='Документ')
     data = models.ForeignKey(Dish, blank=False, null=False, on_delete=models.CASCADE, verbose_name='Продукт')
     count = models.DecimalField(max_digits=6, decimal_places=3, verbose_name='Количество')
 
