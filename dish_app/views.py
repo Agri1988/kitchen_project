@@ -135,9 +135,10 @@ def add_field_element(request, template, form, fieldname):
 @login_required(login_url='users_app:login')
 def delete_product(request, product_id):
     product = Product.objects.get(id=product_id)
-    products = ProductsInDocument.objects.all()
+    products = ProductsInDocument.objects.filter(document__document_type=0).filter(document__document_status=True).\
+        filter(data=product_id)
 
-    product.delete() if product in products else product.save()
+    product.delete() if len(products)==0 else product.save()
     return HttpResponseRedirect(reverse('dish_app:all_products'))
 
 
@@ -145,6 +146,7 @@ def delete_product(request, product_id):
 @login_required(login_url='users_app:login')
 def delete_dish(request, product_id):
     dish = Dish.objects.get(id=product_id)
-    dishes = DishInDocument.objects.all()
-    dish.delete() if dish in dishes else dish.save()
+    dishes = DishInDocument.objects.filter(document__document_type=1).filter(document__document_status=True)\
+        .filter(data=product_id)
+    dish.delete() if len(dishes)==0 else dish.save()
     return HttpResponseRedirect(reverse('dish_app:all_dishes'))
