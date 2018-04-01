@@ -1,5 +1,5 @@
 from django import forms
-from .models import Dish, Product, ProductCategory, Category
+from .models import Dish, Product, ProductCategory, Category, Ingredients
 
 
 class DishForm(forms.ModelForm):
@@ -24,3 +24,9 @@ class DishCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredients
+        fields = "__all__"

@@ -27,7 +27,7 @@ function add_product_script() {
                     console.log('OK');
                     console.log(data);
                     $('#modal_form_product').append(data)
-                    add_category()
+                    //add_category()
                 },
                 error:function () {
                     console.log('error')
@@ -66,12 +66,13 @@ function add_product_to_product_list(e) {
     $.ajax({
         url:'/dishes/product_to_productList/',
         type:'POST',
-        data:{csrfmiddlewaretoken:csrf, name:product_name, unit:product_unit, category:product_category, ajax:'True'},
+        data:{csrfmiddlewaretoken:csrf, name:product_name, unit:product_unit, category:product_category, ajax:'True',
+        line_number:(typeof(productlist_to_dish) === 'undefined') ? '' : productlist_to_dish},
         success:function (data){
             console.log('OK');
             console.log(data);
             $('#table_products').append(data)
-
+            close_modal_window_product()
         },
         error:function () {
             console.log('error')

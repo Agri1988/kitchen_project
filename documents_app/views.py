@@ -57,7 +57,7 @@ def detail_document(request, document_id = None):
             form.save()
 
     context = {'form': form, 'document_id': document_id, 'products': products, 'dishes': dishes,
-               'document_type': 'dish' if len(dishesInDocument) != 0 else 'product',
+               'document_type': 'dish' if (len(dishesInDocument) if dishesInDocument != None else False) != 0 else 'product',
                'productsInDocument': productsInDocument if productsInDocument or productsInDocument == None else False,
                'dishesInDocument': dishesInDocument}
     if document_id == None:
@@ -119,6 +119,7 @@ def get_all_products_to_document(request):
         return HttpResponse(template.render({'datas': productInDocument, 'one_line': True,
                                              'document_id':new_entry.document.id, 'document_type':'product'}, request))
     elif request.POST.get('ajax'):
+        print('docu,ent detail')
         product = Product()
         product.name = request.POST['name']
         product.unit = request.POST['unit']
@@ -126,11 +127,12 @@ def get_all_products_to_document(request):
         product.save()
         template = get_template('documents_app/all_dishes_to_document.html')
         return HttpResponse(template.render({'dish': product, 'line_number': request.POST['line_number'],
+                                             'document_type':'product',
                                              'url': '/documents/get_all_products_to_document/'}, request))
     else:
         products = Product.objects.all()
         template = get_template('documents_app/all_dishes_to_document.html')
-        return HttpResponse(template.render({'add_product':True, 'dishes':products,
+        return HttpResponse(template.render({'add_product':True, 'dishes':products, 'product':True,
                                              'url':'/documents/get_all_products_to_document/'}, request))
 
 

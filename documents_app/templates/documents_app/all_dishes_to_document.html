@@ -2,11 +2,18 @@
 {% if not line_number %}
 <div class="table-responsive ">
     <table  id="table_dishes" class="table table-bordered">
+        <tr id="search_fields">
+            <th><input style="width: 50px"></th>
+            <th><input style="width: 200px"></th>
+        </tr>
         {% for dish in dishes %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ dish.name }}</td>
-                <td><input id="count_{{ dish.id }}"></td>
+                <td><input id="count_{{ dish.id }}" style="width: 50px"></td>
+                {% if product %}
+                    <td>{{ dish.get_unit_display }}</td>
+                {% endif %}
                 <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')">==></button></td>
             </tr>
         {% endfor %}
@@ -29,7 +36,11 @@
                 success: function (data) {
                     console.log('OK');
                     console.log(data);
-                    $('#table').append(data)
+                    $('#table').append(data);
+                        $('#table tr').each(function () {
+                        $(this).find('#id_data').prop('disabled', 'true');
+                        $(this).find('#id_count').prop('disabled', 'true');
+                            });
                 },
                 error: function () {
                     console.log('error')
@@ -37,12 +48,15 @@
             })
         }
     </script>
+    <script type="text/javascript" src="{% static 'dish_app/js/table_search.js' %}"></script>
+    <script> table_search('table_dishes')</script>
     {{ line_number }}
 {% else %}
-<tr>
+<tr>{{ document_type }}
     <td>{{ line_number }}</td>
     <td><a href="{% url 'dish_app:detail_dish' dish.id%}">{{ dish.name }}</a></td>
-    <td><input id="count_{{ dish.id }}"></td>
+    <td><input id="count_{{ dish.id }}" style="width: 50px"></td>
+    <td>{{ dish.get_unit_display }}</td>
     <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')">==></button></td>
 </tr>
 {% endif %}

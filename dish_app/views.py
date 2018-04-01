@@ -7,7 +7,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 
 from .models import Dish, Ingredients, Product, ProductCategory
-from .forms import DishForm, ProductForm
+from .forms import DishForm, ProductForm, IngredientForm
 from documents_app.models import ProductsInDocument, DishInDocument
 
 # Create your views here.
@@ -135,10 +135,11 @@ def add_field_element(request, template, form, fieldname):
 @login_required(login_url='users_app:login')
 def delete_product(request, product_id):
     product = Product.objects.get(id=product_id)
-    products = ProductsInDocument.objects.filter(document__document_type=0).filter(document__document_status=True).\
+    products_in_documents = ProductsInDocument.objects.filter(document__document_type=0).filter(document__document_status=True).\
         filter(data=product_id)
-
-    product.delete() if len(products)==0 else product.save()
+    products_in_dishes = Dish.objects.filter(ingredients__product=product)
+    if (len(products_in_dishes) == 0) and (len(products_in_documents) == 0):
+        product.delete()
     return HttpResponseRedirect(reverse('dish_app:all_products'))
 
 
@@ -150,3 +151,35 @@ def delete_dish(request, product_id):
         .filter(data=product_id)
     dish.delete() if len(dishes)==0 else dish.save()
     return HttpResponseRedirect(reverse('dish_app:all_dishes'))
+
+
+def get_dish_in_documents(request):
+    return JsonResponse({'response':True if len(DishInDocument.objects.filter(document__document_status=True).
+                                                filter(data=request.GET['dish_id'])) != 0 else False})
+
+
+def detail_ingredient(request, dish_id, ingredient_id):
+    if len(DishInDocument.objects.filter(document__document_status=True).
+                   filter(data=dish_id)) == 0:
+        ingredient = Ingredients.objects.get(id=ingredient_id)
+        if request.method != 'POST':
+            form = IngredientForm(instance=ingredient)
+        else:
+            form = IngredientForm(instance=ingredient, data=request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('dish_app:detail_dish', args=[dish_id]))
+        context = {'ingredient':ingredient, 'form':form, 'dish_id':dish_id}
+        return render(request, 'dish_app/detail_ingredient.html', context)
+    else:
+        return HttpResponseRedirect(reverse('dish_app:detail_dish', args=[dish_id]))
+
+
+def delete_ingredient(request, dish_id, ingredient_id):
+    if len(DishInDocument.objects.filter(document__document_status=True).
+                   filter(data=dish_id)) == 0:
+        ingredient = Ingredients.objects.get(id=ingredient_id)
+        ingredient.delete()
+        return HttpResponseRedirect(reverse('dish_app:detail_dish', args=[dish_id]))
+    else:
+        return HttpResponseRedirect(reverse('dish_app:detail_dish', args=[dish_id]))

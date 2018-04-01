@@ -1,5 +1,13 @@
 $(document).ready(function detail_document () {
     if ($('#id_document_status').prop("checked")) {
+        $('#id_document_type').click(function (e) {
+                e.preventDefault()
+                alert('Отмените проведение документа')
+            });
+        $('#id_date').click(function (e) {
+                e.preventDefault()
+                alert('Отмените проведение документа')
+            });
         $('#table img').each(function () {
             $(this).click(function (e) {
                 e.preventDefault()
@@ -12,29 +20,14 @@ $(document).ready(function detail_document () {
     doc_type.on('change', function () {
         change_btn_value()
     });
-    function send_data_to_view() {
-        data = {}
-        $('table tr').each(function () {
-            console.log($(this).find('input').val())
-        })
-        $.ajax({
-            url:'/documents/find_entry/',
-            type:'GET',
-            data:{text:'text'},
-            cache:true,
-            success:function (data){
-                console.log('OK');
-            },
-            error:function () {
-                console.log('error')
-            }
-        });
-    }
-
-    $('#table tr').each(function () {
+    function set_disabled() {
+        $('#table tr').each(function () {
         $(this).find('#id_data').prop('disabled', 'true')
         $(this).find('#id_count').prop('disabled', 'true')
             });
+    }
+    set_disabled()
+
     function change_btn_value() {
         if ($('#id_document_type').val() == 0){
             $('#add_product_or_dish_btn').html("Добавить продукт")

@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dish_app/css/modal_form_category.css' %}">
     <script type="text/javascript" src="{% static 'dish_app/js/add_ingredient.js' %}"></script>
     <script type="text/javascript" src="{% static 'dish_app/js/add_product.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dish_app/js/find_dish_in_execute_document.js' %}"></script>
     <div class="container">
         <div class="row">
             <div class="col-lg-6 ">
@@ -25,7 +26,7 @@
                         <table  id="table" class="table table-bordered">
                             {% for ingredient in ingredients %}
                                 <tr>
-                                    <td>{{ ingredient.product.name }}</td>
+                                    <td>{{ ingredient.product.name }} <input hidden value="{{ ingredient.id }}"></td>
                                     <td>{{ ingredient.quantity }} {{ ingredient.product.get_unit_display }}</td>
                                 </tr>
 

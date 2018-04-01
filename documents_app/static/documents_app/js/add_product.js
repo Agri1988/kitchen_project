@@ -71,6 +71,7 @@ function add_product_to_product_list(e) {
             $('#table_dishes').append(data)
             close_modal_window_product()
 
+
         },
         error:function () {
             console.log('error')

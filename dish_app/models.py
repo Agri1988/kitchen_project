@@ -57,6 +57,11 @@ class Product(models.Model):
     def __str__(self):
         return '%s' % (self.name)
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.capitalize()
+        super(Product, self).save(*args, **kwargs)
+
+
 
 class ProductCategory(models.Model):
     name = models.CharField(max_length=512, blank=False, null=False, verbose_name='Наименование категории')
