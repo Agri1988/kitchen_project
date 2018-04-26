@@ -13,6 +13,7 @@ $(document).ready(function () {
             success: function (data) {
                     console.log('OK');
                     console.log(data);
+                    $('#table tr').remove();
                     table.append(data)
                 },
                 error: function () {

@@ -46,7 +46,7 @@ $(document).ready(function () {
                 data:{csrfmiddlewaretoken: csrf, ajax:true},
                 success: function (data) {
                     console.log('OK');
-                    $('#table').remove();
+                    $('.table-responsive ').remove();
                     $('.col-lg-8').append(data);
                     console.log(data);
                 },

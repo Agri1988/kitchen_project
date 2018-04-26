@@ -36,7 +36,7 @@ $(document).ready(function add_dish_foo() {
                 }
             });
         }
-        else if ($('#id_document_type').val() == 0) {
+        else if ($('#id_document_type').val() != 1) {
             $.ajax({
                 url:'/documents/get_all_products_to_document/',
                 type:'GET',

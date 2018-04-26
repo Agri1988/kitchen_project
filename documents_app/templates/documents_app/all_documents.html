@@ -22,7 +22,7 @@
                                 <td>
                                     <a href="{% url 'documents_app:detail_document'  document.id %}">{{ document.number }}</a>
                                 </td>
-                                <td>{{ document.date.isoformat }}</td>
+                                <td>{{ document.date|date:'d.m.Y' }}</td>
                                 <td>{% if document.document_status %}
                                         Проведен
                                     {% else %}

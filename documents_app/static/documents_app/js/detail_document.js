@@ -15,6 +15,10 @@ $(document).ready(function detail_document () {
             })
         })
     }
+    $('#table tr').each(function () {
+        $(this).find('#id_data').css('width', '500');
+        $(this).find('#id_count').css('width', '70')
+    })
 
     var doc_type = $('#id_document_type')
     doc_type.on('change', function () {
@@ -29,7 +33,7 @@ $(document).ready(function detail_document () {
     set_disabled()
 
     function change_btn_value() {
-        if ($('#id_document_type').val() == 0){
+        if ($('#id_document_type').val() != 1){
             $('#add_product_or_dish_btn').html("Добавить продукт")
         }
         else if ($('#id_document_type').val() == 1){

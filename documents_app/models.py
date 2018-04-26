@@ -4,7 +4,8 @@ from dish_app.models import Dish, Product
 
 
 class Document(models.Model):
-    CHOICES_TYPE = (('0', 'Поступление'), ('1', 'Списание'))
+    CHOICES_TYPE = (('0', 'Поступление'), ('1', 'Списание'), ('2', 'Списание испорченных продуктов'),
+                    ('3', 'Перемещение на "Украинский дворик"') )
     name = models.CharField(max_length=256, blank=False, null=False, verbose_name='Наименование документа')
     number = models.CharField(max_length=256, blank=False, null=False, verbose_name='Номер документа')
     document_type = models.CharField(max_length=128, blank=False, null=False, verbose_name='Тип документа',
@@ -16,6 +17,7 @@ class Document(models.Model):
     class Meta:
         verbose_name = 'Документ'
         verbose_name_plural = 'Документы'
+        ordering = ['date']
 
     def __str__(self):
         return '%s %s %s' % (self.name, self.number, self.date)

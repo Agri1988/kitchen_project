@@ -16,7 +16,7 @@ from .forms import DocumentForm, DishInDocumentForm, ProductInDocumentsForm
 # Create your views here.
 @login_required(login_url='users_app:login')
 def all_documents(request):
-    documents = Document.objects.all()
+    documents = Document.objects.all().order_by('-date')
     context = {'documents':documents}
     return render(request, 'documents_app/all_documents.html', context)
 
@@ -43,7 +43,7 @@ def detail_document(request, document_id = None):
     else:
         moves = MovingProducts.objects.filter(document_id=document_id)
         print(moves, request.POST)
-        if request.POST['document_type'] == '0':
+        if request.POST['document_type'] != '1':
             product_movement(request, moves, products, document)
         elif request.POST['document_type'] == '1':
             product_movement(request, moves, product_movement_dish(DishInDocument.objects.filter(document_id=document_id)), document)
@@ -154,7 +154,7 @@ def products_remnants(request, document_id = None, document_date = date.today().
         product_id_inloop = product.id
         for product_entry in movement_entries:
             product_count = product_entry.count
-            if (product_entry.document.document_type =='1'):
+            if (product_entry.document.document_type in ['1', '2', '3']):
                 product_count = product_count * (-1)
             if (product_id_inloop == product_entry.product.id) and (product_entry.operation_status == True):
                 if product_id_inloop not in remnants_of_products:
@@ -180,7 +180,7 @@ def products_remnants(request, document_id = None, document_date = date.today().
 @login_required(login_url='users_app:login')
 def get_day_income(request, date=date.today()):
     date = (request.POST['date']) if (request.POST.get('ajax')) else None
-    products = ProductsInDocument.objects.filter(document__date=date)
+    products = ProductsInDocument.objects.filter(document__date=date, document__document_type__exact='0')
     if request.POST.get('ajax'):
         print(request.POST)
         template = get_template('documents_app/table_report_day_income.html')
