@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-offset-6 col-lg-6 ">
+            <button class="btn btn-dark" onclick='location.href = "{% url 'dish_app:new_dish' %}"'>Добавить блюдо</button>
                 <div class="table-responsive ">
                     <table  id="table_dishes" class="table table-bordered">
                         <tr id="search_fields">
@@ -20,7 +21,6 @@
                         {% endfor %}
 
                     </table>
-                <a href="{% url 'dish_app:new_dish' %}">Добавить блюдо</a>
                 </div>
             </div>
         </div>

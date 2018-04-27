@@ -46,6 +46,7 @@ $(document).ready(function add_dish_foo() {
                     console.log('OK');
                     // console.log(data);
                     $('#modal_form').append(data);
+                    show_remnants_foo()
 
                     // $('#modal_form').append('<input class="btn btn-dark" id="add_new_product_btn" value="Добавить продукт" type="button">')
                 },
@@ -54,6 +55,7 @@ $(document).ready(function add_dish_foo() {
                 }
             });
         }
+
 
     });
 
@@ -72,7 +74,36 @@ $(document).ready(function add_dish_foo() {
 	$('#modal_close, #overlay').click( function(){ // лoвим клик пo крестику или пoдлoжке
         close_modal_window()
 	});
+    function show_remnants_foo() {
+        $('#table_dishes tr').each(function () {
+            var this_row = $(this).find('#show_remnants');
+            var product_id =  $(this).find('#send_btn').val();
+            var count = $(this).find('input');
+            count.focusin(function () {
+                $.ajax({
+                    url:'/documents/products_remnants/',
+                    type:'GET',
+                    data:{ajax:'True', product_id:product_id},
+                    cache:true,
+                    success:function (data){
+                        console.log('OK');
+                        console.log(data[product_id]);
+                        this_row.append('<div>доступно<br>'+data[product_id]+'</div>');
+                        this_row.show()
+                        // $('#modal_form').append('<input class="btn btn-dark" id="add_new_product_btn" value="Добавить продукт" type="button">')
+                    },
+                    error:function () {
+                        console.log('error')
+                    }
+                });
 
+            });
+            count.focusout(function () {
+                this_row.find('div').remove();
+                this_row.hide()
+            })
+        })
+    }
 })/**
  * Created by Ar on 01.02.2018.
  */

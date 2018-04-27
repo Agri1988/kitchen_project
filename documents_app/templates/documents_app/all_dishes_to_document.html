@@ -10,11 +10,21 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ dish.name }}</td>
-                <td><input id="count_{{ dish.id }}" style="width: 50px"></td>
+                <td><input id="count_{{ dish.id }}" style="width: 50px">
+                    <div id="show_remnants"
+                              style="   height: 50px;
+                                        width: 50px;
+                                        position: relative;
+                                        left: 0px;
+                                        bottom: 0px;
+                                        display: none">
+                        </div>
+                </td>
                 {% if product %}
-                    <td>{{ dish.get_unit_display }}</td>
+                    <td>{{ dish.get_unit_display }} </td>
+
                 {% endif %}
-                <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')">==></button></td>
+                <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')"><img style="width: 20px" src="{% static 'base_app/open-iconic-master/svg/data-transfer-upload.svg' %}"></button></td>
             </tr>
         {% endfor %}
     </table>
@@ -57,6 +67,6 @@
     <td><a href="{% url 'dish_app:detail_dish' dish.id%}">{{ dish.name }}</a></td>
     <td><input id="count_{{ dish.id }}" style="width: 50px"></td>
     <td>{{ dish.get_unit_display }}</td>
-    <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')">==></button></td>
+    <td><button id="send_btn" value="{{ dish.id }}" onclick="add_dish_to_document('{{ dish.id }}')"><img style="width: 20px" src="{% static 'base_app/open-iconic-master/svg/data-transfer-upload.svg' %}"></button></td>
 </tr>
 {% endif %}

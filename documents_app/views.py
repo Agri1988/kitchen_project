@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import get_template
 from django.urls import reverse
@@ -138,17 +139,21 @@ def get_all_products_to_document(request):
 
 @login_required(login_url='users_app:login')
 def products_remnants(request, document_id = None, document_date = date.today().strftime('%Y-%m-%d')):
-    print(request.POST, document_id, document_date)
-
+    if request.GET.get('product_id'):
+        product_id = request.GET['product_id']
+    else:
+        product_id=False
     document_date = document_date.split('.')
     document_date.reverse()
     document_date = '-'.join(document_date)
     date_to_filter_fireld = document_date
-    print(document_date)
+    print(document_date, product_id)
     storage_field = DocumentForm()
     movement_entries = MovingProducts.objects.filter(date__lte=document_date)
-
-    products = Product.objects.all()
+    if not product_id:
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(id=product_id)
     remnants_of_products = {}
     for product in products:
         product_id_inloop = product.id
@@ -170,10 +175,13 @@ def products_remnants(request, document_id = None, document_date = date.today().
     context = {'products':products, 'remnants_of_products':remnants_of_products, 'document_id':document_id,
                "document_date":document_date, 'date_to_filter_fireld':date_to_filter_fireld,
                'storage_field':storage_field}
-    print(remnants_of_products)
+    #print(remnants_of_products)
     if request.POST.get('ajax'):
         template = get_template('documents_app/reports_remnants.html')
         return HttpResponse(template.render(context, request))
+    elif request.GET.get('ajax') and product_id:
+        print(product_id)
+        return JsonResponse(remnants_of_products)
     return render(request, 'documents_app/base_report.html', context)
 
 

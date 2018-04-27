@@ -24,7 +24,7 @@
                                 <td>{{ product.name }}</td>
                                 <td hidden><input id="count_{{ product.id }}"type="number"></td>
                                  <td>{{ product.get_unit_display}}</td>
-                                <td hidden><input id="add_to_document_{{ product.id }}" type="button" value="==>"
+                                <td hidden><input id="add_to_document_{{ product.id }}" type="image" style="width: 20px;" src="{% static 'base_app/open-iconic-master/svg/data-transfer-upload.svg' %}"
                                 onclick="add_product_to_dish('{{ product.id }}')"></td>
                                 <td><a id="delete_line" href="{% url 'dish_app:delete_product' product.id %}">
                         <img style="width: 18px;" src="{% static 'base_app/open-iconic-master/svg/trash.svg' %}"></a> </td>
