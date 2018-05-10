@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
@@ -24,13 +24,14 @@ def all_documents(request):
 
 @login_required(login_url='users_app:login')
 def detail_document(request, document_id = None):
+    start=(datetime.now())
     if document_id != None:
         document = Document.objects.get(id=document_id)
-        products = ProductsInDocument.objects.filter(document_id=document_id)
-        dishes = DishInDocument.objects.filter(document_id=document_id)
-        productsInDocument = [[ProductInDocumentsForm(instance=product),product.id, product.data.get_unit_display]
-                              for product in products]
-        dishesInDocument = [[DishInDocumentForm(instance=dish), dish.id] for dish in dishes]
+        dishes = DishInDocument.objects.filter(document_id=document_id) if document.document_type == '1' else None
+        dishesInDocument = [[dish, dish.id] for dish in dishes] if document.document_type == '1' else None
+        products = ProductsInDocument.objects.filter(document_id=document_id) if document.document_type != '1' else None
+        productsInDocument = [[product,product.id, product.data.get_unit_display]
+                              for product in products] if document.document_type != '1' else None
         #print(products, dishes, dishesInDocument)
     else:
         document = None
@@ -63,7 +64,7 @@ def detail_document(request, document_id = None):
                'dishesInDocument': dishesInDocument}
     if document_id == None:
         context.update({'new': True})
-
+    print(datetime.now() - start)
     return render(request, 'documents_app/detail_document.html', context)
 
 
@@ -139,6 +140,7 @@ def get_all_products_to_document(request):
 
 @login_required(login_url='users_app:login')
 def products_remnants(request, document_id = None, document_date = date.today().strftime('%Y-%m-%d')):
+    start = datetime.now()
     if request.GET.get('product_id'):
         product_id = request.GET['product_id']
     else:
@@ -178,10 +180,13 @@ def products_remnants(request, document_id = None, document_date = date.today().
     #print(remnants_of_products)
     if request.POST.get('ajax'):
         template = get_template('documents_app/reports_remnants.html')
+        print(datetime.now() - start)
         return HttpResponse(template.render(context, request))
     elif request.GET.get('ajax') and product_id:
         print(product_id)
+        print(datetime.now() - start)
         return JsonResponse(remnants_of_products)
+    print(datetime.now()-start)
     return render(request, 'documents_app/base_report.html', context)
 
 
