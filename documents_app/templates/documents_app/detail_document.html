@@ -14,7 +14,7 @@
                     <p><button id="save_document_btn" type="submit" >Сохранить</button></p>
                 </form>
             </div>
-            {% if not new and products %}
+            {% if not new and products != None%}
                 {% include 'documents_app/detail_document_product_or_dish.html' with datas=productsInDocument document_id=document_id  document_type=document_type%}
             {% elif not new and dishes != None %}
                 {% include 'documents_app/detail_document_product_or_dish.html' with datas=dishesInDocument document_id=document_id  document_type=document_type %}

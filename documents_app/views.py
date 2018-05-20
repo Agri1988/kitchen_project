@@ -44,6 +44,8 @@ def detail_document(request, document_id = None):
         form = DocumentForm(instance=document)
     else:
         moves = MovingProducts.objects.filter(document_id=document_id)
+        for i in moves:
+            print(i.__str__())
         print(moves, request.POST)
         if request.POST['document_type'] != '1':
             product_movement(request, moves, products, document)
@@ -58,10 +60,14 @@ def detail_document(request, document_id = None):
                 return HttpResponseRedirect(reverse('documents_app:detail_document', args=[new_id]))
             form.save()
 
-    context = {'form': form, 'document_id': document_id, 'products': products, 'dishes': dishes,
+    context = {'form': form,
+               'document_id': document_id,
+               'products': products,
+               'dishes': dishes,
                'document_type': 'dish' if (len(dishesInDocument) if dishesInDocument != None else False) != 0 else 'product',
-               'productsInDocument': productsInDocument if productsInDocument or productsInDocument == None else False,
-               'dishesInDocument': dishesInDocument}
+               'productsInDocument': productsInDocument if productsInDocument or productsInDocument == None else None,
+               'dishesInDocument': dishesInDocument
+               }
     if document_id == None:
         context.update({'new': True})
     print(datetime.now() - start)
